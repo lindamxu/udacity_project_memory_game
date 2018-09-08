@@ -66,10 +66,6 @@ function init() {
 *@description Checks if two cards match
 */
 function checksForMatch() {
-  console.log(previousEvent.classList);
-  console.log(currentEvent.classList);
-  console.log(previousEvent.children[0].className);
-  console.log(currentEvent.children[0].className);
   //it is a match
   if (previousEvent.children[0].className === currentEvent.children[0].className) {
     previousEvent.classList.add('match');
@@ -124,7 +120,7 @@ function openCard(evt) {
       //check if the game is over
       setTimeout( function () {
         if (matchedCards == cards.length) {
-          alert("CONGRATULATIONS! YOU'VE WON! Do you want to play again? You have " + stars.classList.length + " stars, and you took ");
+          alert("CONGRATULATIONS! YOU'VE WON! Do you want to play again? You have " + stars.classList.length + " star(s), and you took "+ hour_clock.innerHTML +' hours, ' + minute_clock.innerHTML + ' minute(s), and ' + seconds_clock.innerHTML + ' second(s)');
           clearInterval(timerStart);
         }
       }, 500);
