@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matching Game</title>
     <meta name="description" content="">
     <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
@@ -10,12 +11,18 @@
 </head>
 <body>
     <h4 class="timer"> Timer: </h4>
-    <span class="timer" id="hour"></span>:<span id="minute"></span>:<span id="second"></span>
-    <div class="container">
+    <span class="timer" id="hour">0</span>:<span id="minute">0</span>:<span id="second">0</span>
+    <div class="container modal_backdrop">
+      <div id="modal">
+        <div class="modal-content">
+          <span class="closeButton">&times;</span>
+          <p class="modal-text"></p>
+          <button class="modal_repeat" type = "button"> Play Again! </button>
+        </div>
+      </div>
         <header>
             <h1>Matching Game</h1>
         </header>
-
         <section class="score-panel">
         	<ul class="stars">
         	</ul>

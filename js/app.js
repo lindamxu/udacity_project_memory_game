@@ -11,6 +11,10 @@ let hour_clock = document.querySelector('#hour');
 let minute_clock = document.querySelector('#minute');
 let seconds_clock = document.querySelector('#second');
 let movesCounter = document.querySelector('.moves');
+let modalElement = document.querySelector('#modal')
+let modalText = document.querySelector('.modal-text');
+let modal_close = document.querySelector('.closeButton');
+let modalRepeatBtn = document.querySelector('.modal_repeat');
 let openCards = [];
 let moves = 0;
 let matchedCards = 0;
@@ -50,7 +54,12 @@ function clockTimer() {
 *@description Initialize the game
 */
 function init() {
+  //resets relevant variables:
   movesCounter.innerHTML = 0;
+  moves = 0;
+  matchedCards = 0;
+  openCards = [];
+  seconds_clock.innerHTML = 0;
   stars.innerHTML = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`;
 
   const shuffledCards = shuffle(cards);
@@ -99,6 +108,18 @@ function openCard(evt) {
     //saves the first opened card
     if (openCards.length === 1) {
       previousEvent = evt.target;
+      moves++;
+      movesCounter.innerHTML = moves;
+      if ( moves < 10 ) {
+        stars.innerHTML = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`
+      }
+      else if (moves > 10 && moves < 15) {
+        stars.innerHTML = `<li><i class="fa fa-star"></i></li><li><i class="fa fa-star"></i></li>`
+      }
+      else if (moves > 15) {
+        stars.innerHTML = `<li><i class="fa fa-star"></i>`;
+      }
+
     }
     //saves the second opened card
     if (openCards.length === 2) {
@@ -120,8 +141,11 @@ function openCard(evt) {
       //check if the game is over
       setTimeout( function () {
         if (matchedCards == cards.length) {
-          alert("CONGRATULATIONS! YOU'VE WON! Do you want to play again? You have " + stars.classList.length + " star(s), and you took "+ hour_clock.innerHTML +' hours, ' + minute_clock.innerHTML + ' minute(s), and ' + seconds_clock.innerHTML + ' second(s)');
+          openModal();
           clearInterval(timerStart);
+          //matchedCards = 0;
+          //moves = 0;
+
         }
       }, 500);
     }
@@ -130,15 +154,31 @@ function openCard(evt) {
       openCards = [];
     }
   }
-  //UNCLICKS A CARD
-  else if (evt.target.nodeName === 'LI' && evt.target.classList.length > 1) {
-    evt.target.classList.remove('open');
-    evt.target.classList.remove('show');
-    let deleteIndex = openCards.indexOf(evt.target.children[0].className);
-    openCards.splice(deleteIndex, 1);
-  }
+}
+/**
+*@description opens the modal when the game is over
+*/
+function openModal() {
+  modalElement.style.display = 'block';
+  modalText.innerHTML= "CONGRATULATIONS! YOU'VE WON! Do you want to play again? You have " + stars.classList.length + " star(s), and you took "+ hour_clock.innerHTML +' hours, ' + minute_clock.innerHTML + ' minute(s), and ' + seconds_clock.innerHTML + ' second(s)';
 }
 
+/**
+*@description when the modal is closed
+*/
+function closeModal() {
+  modal.style.display = 'none';
+}
+
+/**
+*@description when the user clicks outside the modal
+*/
+
+function clickOutside(e){
+  if (e.target == modalElement) {
+    modalElement.style.display='none';
+  }
+}
 
 /*
  * Display the cards on the page
@@ -196,7 +236,25 @@ deck.addEventListener('click', function (evt) {
 *@description listens for the "replay" button to be clicked
 */
 repeat.addEventListener('click', startOver);
+//modal event listeners
 
+/**
+*@description listens for the exit button of the modal to be clicked
+*/
+modal_close.addEventListener('click', closeModal);
+
+/**
+*@description listens for the user to click outside the modal to close it
+*/
+window.addEventListener('click', clickOutside);
+
+/**
+*@description listens for the user to click the replay button in the modal
+*/
+modalRepeatBtn.addEventListener('click', function () {
+  closeModal();
+  startOver();
+});
 
 //MAIN
 /**
